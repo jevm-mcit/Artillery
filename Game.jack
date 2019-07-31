@@ -1,0 +1,61 @@
+class Game {
+    field Ground g;
+    field int score;
+    field String angMsg, chargeMsg;
+
+    constructor Game new(){
+      let g = Ground.new();
+      let score = 0;
+      let angMsg = "Angle (0-90) ?";
+      let chargeMsg = "Charge (1-10) ?";
+      return this;
+    }
+
+    method void dispose() {
+       do Memory.deAlloc(this);
+       return;
+    }
+
+    method void run() {
+      var char key;
+      var boolean boom;
+      var int angle, charge;
+      let boom = false;
+      while (~boom) {
+        do Screen.clearScreen();
+        do Output.moveCursor(0,0);
+        do g.draw();
+        do g.drawTanks();
+        let charge = Keyboard.readInt(chargeMsg);
+        let angle = Keyboard.readInt(angMsg);
+        do fire(charge, angle);
+        let boom = g.isEnemyDestroyed();
+      }
+      return;
+    }
+
+    method void fire(int charge, int angle) {
+      var int i, x, y, free;
+      var Projectile p;
+
+      let x = g.getTank1X();
+      let y = g.getTank1Y();
+      let p = Projectile.new(x, y, charge, angle);
+
+      let i = 0;
+      while (i < 50) {
+        do p.drawNextTime();
+        let x = p.getX();
+        let y = p.getY();
+        let free = g.getFreeHeight(x);
+        if (y > free) {
+          do g.explode(x);
+          let i = 100;
+        }
+        let i = i + 1;
+        do Sys.wait(150);
+      }
+      do p.dispose();
+      return;
+    }
+}

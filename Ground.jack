@@ -1,0 +1,104 @@
+class Ground {
+  field Array levels;
+  field int baseHeight, xincrement;
+  field int tank1x, tank1y, tank2x, tank2y;
+  field boolean boom;
+
+  constructor Ground new() {
+    let levels = Array.new(20);
+    let levels[0] = 30;
+    let levels[1] = 35;
+    let levels[2] = 35;
+    let levels[3] = 30;
+    let levels[4] = 35;
+    let levels[5] = 30;
+    let levels[6] = 40;
+    let levels[7] = 20;
+    let levels[8] = 60;
+    let levels[9] = 70;
+    let levels[10] = 70;
+    let levels[11] = 50;
+    let levels[12] = 80;
+    let levels[13] = 70;
+    let levels[14] = 60;
+    let levels[15] = 70;
+    let levels[16] = 35;
+    let levels[17] = 30;
+    let levels[18] = 30;
+    let levels[19] = 30;
+
+    let baseHeight = 5;
+    let xincrement = 25;
+
+    let tank1y = 256 - levels[2] - 10 - baseHeight;
+    let tank2y = 256 - levels[17] - 10 - baseHeight;
+    let boom = false;
+    return this;
+  }
+
+  method void dispose() {
+     do Memory.deAlloc(this);
+     return;
+  }
+
+  method void draw() {
+    var int i;
+    var int x1, y1, x2, y2;
+    do Screen.setColor(true);
+
+    let i = 0;
+    while (i < 20) {
+      let x1 = i * xincrement;
+      let x2 = x1 + xincrement;
+      let y1 = 256 - baseHeight - levels[i];
+      let y2 = 256 - baseHeight;
+      do Screen.drawRectangle(x1, y1, x2, y2);
+      let i = i + 1;
+    }
+
+    return;
+  }
+
+  method int getFreeHeight(int x) {
+    var int i;
+    let i = x / xincrement;
+    if (x > 500) {
+      return 0;
+    }
+    return (256 - baseHeight - levels[i]);
+  }
+
+  method void drawTanks() {
+    var int size;
+    let size = 10;
+    do Screen.setColor(true);
+    do Screen.drawCircle(67,tank1y, size);
+    do Screen.drawCircle(437, tank2y, size);
+    return;
+  }
+
+  method void explode(int x0) {
+    var int i, x1, y1, x2, y2;
+    let i = x0 / xincrement;
+    let levels[i] = levels[i] - 20;
+    if (levels[i] < 0) {
+      let levels[i] = 0;
+    }
+    if (i = 17) {
+      let boom = true;
+    }
+    return;
+  }
+
+  method int getTank1X() {
+    return 67;
+  }
+
+  method int getTank1Y() {
+    return tank1y;
+  }
+
+  method boolean isEnemyDestroyed() {
+    return boom;
+  }
+}

@@ -1,0 +1,105 @@
+class Projectile {
+  field int x0, y0, x, y;
+  field int currentTimeInterval;
+  field int size;
+  // field int windFactor;
+  //field int windDisplacement;
+  field int chargeFactor;
+  field int numIntervals;
+  field int timeInterval;
+  field int v0;
+  field int sin100; // 10 * sin(tetha/100)
+  field int cos100; // 10 * cos(tetha/100)
+  field int tetha;  // 100 rad(angle)
+
+  constructor Projectile new(int Ax0, int Ay0, int ACharge, int Aangle) {
+    var int timeInAir;
+//    let windFactor = 2;
+    let chargeFactor = 10;
+    let numIntervals = 50;
+    let size = 5;
+
+    let x0 = Ax0;
+    let y0 = 256 - Ay0;
+    let x = x0;
+    let y = y0;
+
+    let currentTimeInterval = 0;
+
+    let v0 = ACharge * chargeFactor;
+
+    let tetha = (Aangle * 314) / 180;
+
+    let cos100 = Math.max(0, 100 - ((tetha * tetha) / 200));
+    let sin100 = Math.min(100, tetha);
+    let timeInterval = ((v0 * sin100) / 500) / numIntervals;
+    if (timeInterval < 1) {
+      let timeInterval = 1;
+    }
+  //  let windDisplacement = (Awind * timeInAir) / windFactor;
+
+    return this;
+  }
+
+  method void dispose() {
+     do Memory.deAlloc(this);
+     return;
+  }
+
+  method int calcX(int itime) {
+    var int xparabolic, time, a;
+    let time = itime * timeInterval;
+    let a = (((v0 * time) / 10) * cos100) / 10;
+    let xparabolic = x0 + a;
+    return xparabolic;
+  }
+
+  method int calcY(int itime) {
+    var int time, a, b, yparabolic;
+    let time = itime * timeInterval;
+    let a = (((v0 / 10) * time) * sin100) / 10;
+    let b = 5 * time * time;
+    let yparabolic = y0 + a - b;
+    if (yparabolic < 0) {
+      return 0;
+    } else {
+      return yparabolic;
+    }
+  }
+
+  method void drawNextTime() {
+    do Screen.setColor(false);
+    do drawIfPossible(x,y);
+    let currentTimeInterval = currentTimeInterval + 1;
+    let x = calcX(currentTimeInterval);
+    let y = calcY(currentTimeInterval);
+    do Screen.setColor(true);
+    do drawIfPossible(x,y);
+    // do Screen.drawCircle(x, 256 - y, size);
+    return;
+  }
+
+  method void drawIfPossible(int x, int y) {
+    var int ycoord;
+    let ycoord = 256 - y;
+    if ((x > 0) & (x < 500)) {
+      if ((ycoord > 0) & (ycoord < 250)) {
+        do Screen.drawCircle(x, ycoord, size);
+      }
+    }
+    return;
+  }
+
+  method int getX() {
+    return x;
+  }
+
+  method int getY() {
+    return (256 - y);
+  }
+
+  method int getI() {
+    return currentTimeInterval;
+  }
+
+}
