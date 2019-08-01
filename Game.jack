@@ -1,3 +1,7 @@
+/**
+* ARTILLERY - https://github.com/jevm-mcit/Artillery
+* Game controller
+*/
 class Game {
     field Ground g;
     field int score, bombs, wind, seed;

@@ -1,3 +1,7 @@
+/**
+* ARTILLERY - https://github.com/jevm-mcit/Artillery
+* Ground fields, randomly generates landscape
+*/
 class Ground {
   field Array levels;
   field int baseHeight, xincrement;

@@ -1,3 +1,7 @@
+/**
+* ARTILLERY - https://github.com/jevm-mcit/Artillery
+* Random number generator as per supplied seed, between 0 and max
+*/
 class Random {
   field int j, ans, max;
 

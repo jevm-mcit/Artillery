@@ -1,9 +1,15 @@
+/**
+* ARTILLERY - https://github.com/jevm-mcit/Artillery
+* Simulates physics of projectile motion and draw it in screen,
+* it Implements a very simple (Taylor series) trigonometric approximation for
+* parabolic motion calculation (sin a = a, cos a = 1 - a² / 2, a in radians).
+* See https://en.wikipedia.org/wiki/Projectile_motion and
+*  https://en.wikipedia.org/wiki/Small-angle_approximation.
+*/
 class Projectile {
   field int x0, y0, x, y, wind;
   field int currentTimeInterval;
   field int size;
-  // field int windFactor;
-  //field int windDisplacement;
   field int chargeFactor;
   field int numIntervals;
   field int timeInterval;
@@ -14,7 +20,6 @@ class Projectile {
 
   constructor Projectile new(int Ax0, int Ay0, int ACharge, int Aangle, int Awind) {
     var int timeInAir;
-//    let windFactor = 2;
     let chargeFactor = 10;
     let numIntervals = 50;
     let size = 5;
@@ -37,7 +42,6 @@ class Projectile {
     if (timeInterval < 1) {
       let timeInterval = 1;
     }
-  //  let windDisplacement = (Awind * timeInAir) / windFactor;
 
     return this;
   }
@@ -52,7 +56,7 @@ class Projectile {
     let time = itime * timeInterval;
     let a = (((v0 * time) / 10) * cos100) / 10;
     let xparabolic = x0 + a;
-    let xparabolic = xparabolic + ((wind * time) / 8);
+    let xparabolic = xparabolic + ((wind * time) / 8);  // 8 is the weight to give to the wind
     return xparabolic;
   }
 
