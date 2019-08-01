@@ -12,9 +12,13 @@ When game starts it prompts for a game number, this can be any number (or string
 
 ## Implementation
 Main.jack - Game runner with main() function
+
 Game.jack - Main game controller, constructor prompts for game number
+
 Projectile.jack - Simulates physics of projectile motion and draw it in screen, it Implements a very simple (Taylor series) trigonometric approximation for parabolic motion calculation (sin a = a, cos a = 1 - a² / 2, a in radians).  See https://en.wikipedia.org/wiki/Projectile_motion and https://en.wikipedia.org/wiki/Small-angle_approximation.  
+
 Random.jack - Simple random number generation, see https://cdsmith.wordpress.com/2011/10/10/build-your-own-simple-random-numbers/
+
 Ground.jack - Ground fields, randomly generates landscape
 
 ## Repo
