@@ -1,36 +1,100 @@
 class Game {
     field Ground g;
-    field int score;
-    field String angMsg, chargeMsg;
+    field int score, bombs, wind, seed;
+    field String angMsg, chargeMsg, scoreMsg, bombsMsg, windMsg, numberMsg;
+    field Random random;
 
     constructor Game new(){
-      let g = Ground.new();
       let score = 0;
+      let bombs = 5;
       let angMsg = "Angle (0-90) ?";
       let chargeMsg = "Charge (1-10) ?";
+      let scoreMsg = "SCORE:";
+      let bombsMsg = "Bombs left:";
+      let windMsg = "Wind Speed:";
+      let numberMsg = "Game number?";
+
+      do Output.printString("Welcome to ARTILLERY a Jack/Hack game");
+      do Output.println();
+      do Output.println();
+      do Output.printString("Please read README.TXT for instructions");
+      do Output.println();
+      do Output.println();
+      let seed = Keyboard.readInt(numberMsg);
+      let random = Random.new(seed, 60);
+
+      do numberMsg.dispose();
+      let g = Ground.new(seed);
+
       return this;
     }
 
     method void dispose() {
+       do angMsg.dispose();
+       do chargeMsg.dispose();
+       do scoreMsg.dispose();
+       do bombsMsg.dispose();
+       do windMsg.dispose();
+       do numberMsg.dispose();
+       do g.dispose();
+       do random.dispose();
        do Memory.deAlloc(this);
        return;
     }
 
     method void run() {
-      var char key;
+      while (bombs > 0) {
+        do newScenario();
+      }
+      do Output.moveCursor(10,25);
+      do Output.printString("GAME OVER");
+      return;
+    }
+
+    method void newScenario() {
       var boolean boom;
       var int angle, charge;
+
       let boom = false;
-      while (~boom) {
-        do Screen.clearScreen();
-        do Output.moveCursor(0,0);
+
+      let wind = 30 - random.nextInt();
+      do g.terraForm();
+
+      while ((~boom) & (bombs > 0)) {
+        do printStatus();
         do g.draw();
         do g.drawTanks();
         let charge = Keyboard.readInt(chargeMsg);
         let angle = Keyboard.readInt(angMsg);
+
         do fire(charge, angle);
+        let bombs = bombs - 1;
         let boom = g.isEnemyDestroyed();
       }
+
+      if (boom) {
+        let score = score + 1;
+        let bombs = bombs + 2;
+      }
+      do printStatus();
+      return;
+    }
+
+    method void printStatus() {
+      do Screen.clearScreen();
+      do Output.moveCursor(0,50);
+      do Output.printString(windMsg);
+      do Output.printInt(wind);
+
+      do Output.moveCursor(1,50);
+      do Output.printString(scoreMsg);
+      do Output.printInt(score);
+
+      do Output.moveCursor(2,50);
+      do Output.printString(bombsMsg);
+      do Output.printInt(bombs);
+
+      do Output.moveCursor(0,0);
       return;
     }
 
@@ -40,7 +104,7 @@ class Game {
 
       let x = g.getTank1X();
       let y = g.getTank1Y();
-      let p = Projectile.new(x, y, charge, angle);
+      let p = Projectile.new(x, y, charge, angle, wind);
 
       let i = 0;
       while (i < 50) {

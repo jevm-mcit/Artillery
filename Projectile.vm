@@ -1,13 +1,13 @@
 function Projectile.new 1
-push constant 13
+push constant 14
 call Memory.alloc 1
 pop pointer 0
 push constant 10
-pop this 6
-push constant 50
 pop this 7
+push constant 50
+pop this 8
 push constant 5
-pop this 5
+pop this 6
 push argument 0
 pop this 0
 push constant 256
@@ -18,48 +18,50 @@ push this 0
 pop this 2
 push this 1
 pop this 3
-push constant 0
+push argument 4
 pop this 4
+push constant 0
+pop this 5
 push argument 2
-push this 6
+push this 7
 call Math.multiply 2
-pop this 9
+pop this 10
 push argument 3
 push constant 314
 call Math.multiply 2
 push constant 180
 call Math.divide 2
-pop this 12
+pop this 13
 push constant 0
 push constant 100
-push this 12
-push this 12
+push this 13
+push this 13
 call Math.multiply 2
 push constant 200
 call Math.divide 2
 sub
 call Math.max 2
-pop this 11
+pop this 12
 push constant 100
-push this 12
+push this 13
 call Math.min 2
-pop this 10
-push this 9
+pop this 11
 push this 10
+push this 11
 call Math.multiply 2
 push constant 500
 call Math.divide 2
-push this 7
-call Math.divide 2
-pop this 8
 push this 8
+call Math.divide 2
+pop this 9
+push this 9
 push constant 1
 lt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 1
-pop this 8
+pop this 9
 label IF_FALSE0
 push pointer 0
 return
@@ -75,15 +77,15 @@ function Projectile.calcX 3
 push argument 0
 pop pointer 0
 push argument 1
-push this 8
+push this 9
 call Math.multiply 2
 pop local 1
-push this 9
+push this 10
 push local 1
 call Math.multiply 2
 push constant 10
 call Math.divide 2
-push this 11
+push this 12
 call Math.multiply 2
 push constant 10
 call Math.divide 2
@@ -93,20 +95,28 @@ push local 2
 add
 pop local 0
 push local 0
+push this 4
+push local 1
+call Math.multiply 2
+push constant 8
+call Math.divide 2
+add
+pop local 0
+push local 0
 return
 function Projectile.calcY 4
 push argument 0
 pop pointer 0
 push argument 1
-push this 8
+push this 9
 call Math.multiply 2
 pop local 0
-push this 9
+push this 10
 push constant 10
 call Math.divide 2
 push local 0
 call Math.multiply 2
-push this 10
+push this 11
 call Math.multiply 2
 push constant 10
 call Math.divide 2
@@ -147,16 +157,16 @@ push this 2
 push this 3
 call Projectile.drawIfPossible 3
 pop temp 0
-push this 4
+push this 5
 push constant 1
 add
-pop this 4
+pop this 5
 push pointer 0
-push this 4
+push this 5
 call Projectile.calcX 2
 pop this 2
 push pointer 0
-push this 4
+push this 5
 call Projectile.calcY 2
 pop this 3
 push constant 0
@@ -178,7 +188,7 @@ push argument 2
 sub
 pop local 0
 push argument 1
-push constant 0
+push constant 5
 gt
 push argument 1
 push constant 500
@@ -188,7 +198,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push local 0
-push constant 0
+push constant 5
 gt
 push local 0
 push constant 250
@@ -199,7 +209,7 @@ goto IF_FALSE1
 label IF_TRUE1
 push argument 1
 push local 0
-push this 5
+push this 6
 call Screen.drawCircle 3
 pop temp 0
 label IF_FALSE1
@@ -217,9 +227,4 @@ pop pointer 0
 push constant 256
 push this 3
 sub
-return
-function Projectile.getI 0
-push argument 0
-pop pointer 0
-push this 4
 return

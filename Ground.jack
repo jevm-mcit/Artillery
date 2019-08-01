@@ -3,40 +3,35 @@ class Ground {
   field int baseHeight, xincrement;
   field int tank1x, tank1y, tank2x, tank2y;
   field boolean boom;
+  field Random random;
 
-  constructor Ground new() {
+  constructor Ground new(int seed) {
     let levels = Array.new(20);
-    let levels[0] = 30;
-    let levels[1] = 35;
-    let levels[2] = 35;
-    let levels[3] = 30;
-    let levels[4] = 35;
-    let levels[5] = 30;
-    let levels[6] = 40;
-    let levels[7] = 20;
-    let levels[8] = 60;
-    let levels[9] = 70;
-    let levels[10] = 70;
-    let levels[11] = 50;
-    let levels[12] = 80;
-    let levels[13] = 70;
-    let levels[14] = 60;
-    let levels[15] = 70;
-    let levels[16] = 35;
-    let levels[17] = 30;
-    let levels[18] = 30;
-    let levels[19] = 30;
-
     let baseHeight = 5;
     let xincrement = 25;
+    let boom = false;
+    let random = Random.new(seed, 200);
+    return this;
+  }
+
+  method void terraForm() {
+    var int i;
+    let i = 0;
+
+    while (i < 20) {
+        let levels[i] = random.nextInt() + 20;
+        let i = i + 1;
+    }
+    let levels[3] = levels[2];
 
     let tank1y = 256 - levels[2] - 10 - baseHeight;
     let tank2y = 256 - levels[17] - 10 - baseHeight;
     let boom = false;
-    return this;
+    return;
   }
 
   method void dispose() {
+     do random.dispose();
      do Memory.deAlloc(this);
      return;
   }
@@ -74,12 +69,15 @@ class Ground {
     do Screen.setColor(true);
     do Screen.drawCircle(67,tank1y, size);
     do Screen.drawCircle(437, tank2y, size);
+    do Screen.setColor(false);
+    do Screen.drawCircle(67,tank1y, size - 5);
+    do Screen.drawCircle(437, tank2y, size - 5);
     return;
   }
 
   method void explode(int x0) {
-    var int i, x1, y1, x2, y2;
-    let i = x0 / xincrement;
+    var int i;
+    let i = ((x0 + 5) / xincrement);
     let levels[i] = levels[i] - 20;
     if (levels[i] < 0) {
       let levels[i] = 0;

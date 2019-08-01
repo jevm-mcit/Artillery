@@ -1,5 +1,5 @@
 class Projectile {
-  field int x0, y0, x, y;
+  field int x0, y0, x, y, wind;
   field int currentTimeInterval;
   field int size;
   // field int windFactor;
@@ -12,7 +12,7 @@ class Projectile {
   field int cos100; // 10 * cos(tetha/100)
   field int tetha;  // 100 rad(angle)
 
-  constructor Projectile new(int Ax0, int Ay0, int ACharge, int Aangle) {
+  constructor Projectile new(int Ax0, int Ay0, int ACharge, int Aangle, int Awind) {
     var int timeInAir;
 //    let windFactor = 2;
     let chargeFactor = 10;
@@ -23,6 +23,7 @@ class Projectile {
     let y0 = 256 - Ay0;
     let x = x0;
     let y = y0;
+    let wind = Awind;
 
     let currentTimeInterval = 0;
 
@@ -51,6 +52,7 @@ class Projectile {
     let time = itime * timeInterval;
     let a = (((v0 * time) / 10) * cos100) / 10;
     let xparabolic = x0 + a;
+    let xparabolic = xparabolic + ((wind * time) / 8);
     return xparabolic;
   }
 
@@ -75,15 +77,14 @@ class Projectile {
     let y = calcY(currentTimeInterval);
     do Screen.setColor(true);
     do drawIfPossible(x,y);
-    // do Screen.drawCircle(x, 256 - y, size);
     return;
   }
 
   method void drawIfPossible(int x, int y) {
     var int ycoord;
     let ycoord = 256 - y;
-    if ((x > 0) & (x < 500)) {
-      if ((ycoord > 0) & (ycoord < 250)) {
+    if ((x > 5) & (x < 500)) {
+      if ((ycoord > 5) & (ycoord < 250)) {
         do Screen.drawCircle(x, ycoord, size);
       }
     }
@@ -96,10 +97,6 @@ class Projectile {
 
   method int getY() {
     return (256 - y);
-  }
-
-  method int getI() {
-    return currentTimeInterval;
   }
 
 }

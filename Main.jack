@@ -1,3 +1,7 @@
+/**
+* ARTILLERY
+* Game runner
+*/
 class Main {
   function void main() {
       var Game g;
@@ -6,6 +10,4 @@ class Main {
       do g.dispose();
       return;
   }
-
-
 }
