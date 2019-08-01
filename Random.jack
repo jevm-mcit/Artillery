@@ -1,0 +1,26 @@
+class Random {
+  field int j, ans, max;
+
+  constructor Random new(int Aseed, int Amax) {
+    let j = Aseed;
+    let max = Amax;
+    return this;
+  }
+
+  method void dispose() {
+     do Memory.deAlloc(this);
+     return;
+  }
+
+  method int modulus(int a, int b) {
+    var int div;
+    let div = a / b;
+    return a - (div * b);
+  }
+
+  method int nextInt() {
+    let j = modulus(7 * j, 101);
+    let ans = modulus(j - 1, max);
+    return ans;
+  }
+}
